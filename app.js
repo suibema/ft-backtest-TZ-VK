@@ -41,8 +41,8 @@ if (MAINTENANCE_MODE) {
 
 // ======================= APP =======================
 
-console.log("app-tg.js loaded");
-console.log("window.Telegram =", window.Telegram);
+console.log("app-vk.js loaded");
+console.log("window.vkBridge =", window.vkBridge);
 
 const WEBHOOK_URL = "https://webhooks.fut.ru/ft-dispather/requests";
 const STAGE_NAME = "Таблица (вид) - ТЗ";
@@ -72,26 +72,29 @@ function showError(msg) {
   </div>`;
 }
 
-function initTelegramApp() {
-  const tg = window.Telegram?.WebApp;
-  const telegramUserId = tg?.initDataUnsafe?.user?.id || null;
+async function initVKApp() {
+  const bridge = window.vkBridge;
 
-  if (!tg || !telegramUserId) {
-    throw new Error("Telegram WebApp не найден. Откройте мини-апп из Telegram.");
+  if (!bridge) {
+    throw new Error("VK Bridge не найден. Откройте мини-апп из VK.");
   }
 
-  tg.ready();
-  tg.expand();
+  await bridge.send("VKWebAppInit");
+  const vkUser = await bridge.send("VKWebAppGetUserInfo");
 
-  platformUserId = telegramUserId;
+  platformUserId = vkUser?.id || null;
 
-  console.log("Telegram initialized", platformUserId);
+  if (!platformUserId) {
+    throw new Error("Не удалось получить VK user id.");
+  }
+
+  console.log("VK initialized", platformUserId);
   showScreen("welcome");
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   try {
-    initTelegramApp();
+    await initVKApp();
   } catch (err) {
     console.error("Init error:", err);
     showError(err.message || "Ошибка приложения");
@@ -101,7 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
 async function sendFiles() {
   const form = new FormData();
 
-  form.append("params[tg_id]", String(platformUserId || ""));
+  form.append("params[vk_id]", String(platformUserId || ""));
   form.append("params[stage_name]", STAGE_NAME);
   form.append("params[deadline_tz_1]", new Date().toISOString());
 
@@ -241,7 +244,7 @@ document.getElementById("skipFile3")?.addEventListener("click", async () => {
 });
 
 document.getElementById("closeApp")?.addEventListener("click", () => {
-  if (window.Telegram?.WebApp) {
-    window.Telegram.WebApp.close();
+  if (window.vkBridge) {
+    window.vkBridge.send("VKWebAppClose", { status: "success" });
   }
 });
