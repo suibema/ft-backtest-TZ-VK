@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Загрузка решений</title>
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+
+  <!-- Оригинальные экраны (будут заменены сообщением о техработах через JS) -->
+  <div class="screen" id="welcomeScreen">
+    <h2>Готов(а) загрузить задание? Мы очень ждем! 😊</h2>
+    <div style="padding: 20px; text-align: left; line-height: 1.6;">
+      <p>Загружай файлы по одному:</p>
+      <ol>
+        <li>Нажми «Выберите файл»,</li>
+        <li>Потом «Отправить задание»,</li>
+        <li>Есть ещё файлы? Повтори заданные действия!</li>
+      </ol>
+      <p>Когда всё загрузишь — жми «Больше не буду».</p>
+
+      <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; margin-top: 20px;">
+        <p><strong>Лайфхак:</strong> если файл слишком тяжёлый, просто вставь ссылку на облако в Word-док и отправь его.</p>
+        <p>Главное — не забудь открыть доступ!<br />А то будем грустно смотреть на закрытую ссылку 😉</p>
+      </div>
+    </div>
+    <button id="startUpload">Начать загрузку</button>
+  </div>
+
+  <div class="screen hidden" id="uploadScreen1">
+    <div class="step-indicator">
+      <div class="step active">1</div>
+      <div class="step">2</div>
+      <div class="step">3</div>
+    </div>
+    <h2>Загрузите решение 1</h2>
+    <div class="file-info">Формат: PDF, DOCX, PNG, XLSX (макс. 15MB)</div>
+    <input type="file" id="fileInput1" />
+    <div class="progress-bar">
+      <div class="progress" id="progress1"></div>
+    </div>
+    <div class="upload-status" id="status1"></div>
+    <div id="error1" class="error-message hidden"></div>
+    <button id="submitFile1">Отправить файл</button>
+  </div>
+
+  <div class="screen hidden" id="uploadScreen2">
+    <div class="step-indicator">
+      <div class="step completed">1</div>
+      <div class="step completed">2</div>
+      <div class="step active">3</div>
+    </div>
+    <h2>Загрузите решение 2</h2>
+    <div class="file-info">Формат: PDF, DOCX, PNG, XLSX (макс. 15MB)</div>
+    <input type="file" id="fileInput2" />
+    <div class="progress-bar">
+      <div class="progress" id="progress2"></div>
+    </div>
+    <div class="upload-status" id="status2"></div>
+    <div id="error2" class="error-message hidden"></div>
+    <div class="button-group">
+      <button id="submitFile2">Отправить файл</button>
+      <button id="skipFile2" class="secondary">Больше не буду</button>
+    </div>
+  </div>
+
+  <div class="screen hidden" id="uploadScreen3">
+    <div class="step-indicator">
+      <div class="step completed">1</div>
+      <div class="step completed">2</div>
+      <div class="step active">3</div>
+    </div>
+    <h2>Загрузите решение 3</h2>
+    <div class="file-info">Формат: PDF, DOC, PNG, XLSX (макс. 15MB)</div>
+    <input type="file" id="fileInput3" />
+    <div class="progress-bar">
+      <div class="progress" id="progress3"></div>
+    </div>
+    <div class="upload-status" id="status3"></div>
+    <div id="error3" class="error-message hidden"></div>
+    <div class="button-group">
+      <button id="submitFile3">Отправить файл</button>
+      <button id="skipFile3" class="secondary">Завершить</button>
+    </div>
+  </div>
+
+  <div class="screen hidden" id="resultScreen">
+    <h2>Спасибо! Мы получили задание. Вернёмся с результатом в течение 5 рабочих дней!</h2>
+    <p class="fig">
+      <img src="images/12_happy_2_Монтажная область 1.png" alt="Прощание" width="300" height="250" />
+    </p>
+    <div class="success-message">Ваши файлы успешно загружены.</div>
+    <button id="closeApp">Закрыть приложение</button>
+  </div>
+  <script src="./app.js"></script>
+</body>
+</html>
